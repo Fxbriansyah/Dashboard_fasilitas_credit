@@ -54,7 +54,14 @@ button[data-testid="collapsedControl"] {
 .block-container {
     padding-top: 1.5rem;
     padding-bottom: 3rem;
-    max-width: 1800px;
+    padding-left: 1rem;   /* diperkecil supaya dashboard lebih dekat ke sidebar */
+    padding-right: 1rem;
+    max-width: 98%;
+}
+
+/* Kurangi juga jarak bawaan pada wrapper utama Streamlit di kanan sidebar */
+div[data-testid="stAppViewContainer"] section.main {
+    padding-left: 0 !important;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
