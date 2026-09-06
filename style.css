@@ -54,8 +54,8 @@ button[data-testid="collapsedControl"] {
 .block-container {
     padding-top: 1.5rem;
     padding-bottom: 3rem;
-    padding-left: 1rem;   /* diperkecil supaya dashboard lebih dekat ke sidebar */
-    padding-right: 1rem;
+    padding-left: 2rem;   /* diperkecil supaya dashboard lebih dekat ke sidebar */
+    padding-right: 2rem;
     max-width: 98%;
 }
 
