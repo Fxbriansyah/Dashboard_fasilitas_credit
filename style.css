@@ -1,0 +1,394 @@
+/* =========================================================
+   DASHBOARD PENCAIRAN - ALL SEGMENT BISNIS
+   File CSS terpisah dari app.py.
+   Kalau mau ubah tampilan (warna, jarak, ukuran), cukup edit
+   file ini saja tanpa menyentuh kode Python.
+   ========================================================= */
+
+/* =========================================================
+   1. FONT & VARIABEL WARNA GLOBAL
+   Semua warna/ukuran dasar dipusatkan di sini supaya konsisten
+   dan gampang diganti (tinggal edit satu tempat ini saja).
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --brand: #2563eb;          /* Warna utama (biru) */
+    --brand-dark: #1d4ed8;     /* Warna utama gelap (hover/active) */
+    --brand-soft: #eff6ff;     /* Warna latar lembut */
+    --ink: #0f172a;            /* Warna teks utama */
+    --muted: #64748b;          /* Warna teks sekunder */
+    --faint: #94a3b8;          /* Warna teks pudar / label kecil */
+    --border: #e6eaf1;         /* Warna garis tepi standar */
+    --bg-app: #f4f6fb;         /* Latar belakang aplikasi */
+    --radius: 14px;            /* Sudut membulat standar (kartu besar) */
+    --radius-sm: 10px;         /* Sudut membulat kecil (tombol, chip) */
+    --gap: 14px;               /* Jarak standar antar elemen/kartu */
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 16px rgba(15,23,42,.05);
+    --shadow-hover: 0 4px 10px rgba(15,23,42,.06), 0 14px 28px rgba(15,23,42,.08);
+}
+
+html, body, [class*="css"] {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* =========================================================
+   2. LAYOUT APLIKASI & HEADER STREAMLIT BAWAAN
+   ========================================================= */
+body, .stApp { background: var(--bg-app) !important; }
+
+/* Sembunyikan header bawaan Streamlit (logo/menu default) supaya
+   tampilan lebih bersih dan judul kita tidak ketutupan. */
+header[data-testid="stHeader"] { background: transparent; height: 0; min-height: 0; overflow: visible; }
+header[data-testid="stHeader"] * { display: none; }
+div[data-testid="stToolbar"] { display: none; }
+
+/* Pastikan tombol untuk membuka kembali sidebar yang tertutup tetap muncul. */
+div[data-testid="collapsedControl"],
+button[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.block-container {
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
+    max-width: 96%;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================================
+   3. TIPOGRAFI & JUDUL
+   ========================================================= */
+.main-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 2px;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+/* Dipakai bersama class "main-title" di halaman selain dashboard
+   utama (Upload, Proses, Ringkasan) yang butuh judul lebih kecil. */
+.main-title--page {
+    font-size: 1.5rem;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--brand);
+    letter-spacing: 0.14em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+/* Teks deskripsi kecil di bawah judul halaman (mis. halaman Upload). */
+.page-description {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 14px;
+}
+
+/* Utility: geser sedikit ke kanan supaya tidak mepet ke tepi kiri. */
+.indent-sm {
+    margin-left: 6px;
+}
+
+h3 {
+    font-weight: 800 !important;
+    color: var(--ink) !important;
+    font-size: 1rem !important;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4rem !important;
+    padding-left: 8px !important;
+}
+
+.segment-chart-title {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--seg-color);
+    margin: 6px 0 2px;
+    padding-left: 8px;
+}
+
+/* =========================================================
+   4. KOMPONEN STEPPER (PROSES UPLOAD)
+   ========================================================= */
+.step-box {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    background: #fff;
+    height: 100%;
+    box-shadow: var(--shadow);
+    transition: all .15s ease;
+}
+.step-box.active {
+    border: 1.5px solid var(--brand);
+    background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+    box-shadow: 0 4px 14px rgba(37,99,235,.16);
+}
+.step-box.done { border: 1px solid #bbf0d1; background: #f6fefa; }
+
+.step-num {
+    display: inline-block;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    text-align: center; line-height: 24px;
+    font-weight: 700; font-size: .78rem;
+    margin-right: 8px;
+}
+.step-box.done .step-num { background: #16a34a; }
+.step-box.active .step-num { background: var(--brand-dark); }
+
+.step-title { font-weight: 700; font-size: .87rem; color: var(--ink); }
+.step-box:not(.active):not(.done) .step-title { color: var(--muted); }
+
+/* =========================================================
+   5. BANNER & PETUNJUK UPLOAD
+   ========================================================= */
+.success-banner {
+    background: linear-gradient(90deg, #ecfdf5 0%, #f0fdf4 100%);
+    border: 1px solid #86efac;
+    color: #166534;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    margin-bottom: var(--gap);
+    box-shadow: var(--shadow);
+}
+
+.upload-hint {
+    border: 1.5px dashed #cbd5e1;
+    border-radius: var(--radius);
+    padding: 22px;
+    background: #fff;
+    font-size: .88rem;
+    color: var(--muted);
+    line-height: 1.6;
+}
+.upload-hint b { color: var(--ink); }
+
+.data-chip {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    padding: 10px 16px;
+    font-size: .76rem;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: var(--shadow);
+    justify-content: flex-end;
+}
+.data-chip b { color: var(--ink); font-size: .85rem; display: block; }
+
+/* tambahan baru */
+.data-chip__icon {
+    font-size: 1rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Kartu judul dashboard, disamakan gayanya dengan .data-chip di sampingnya. */
+.dashboard-title-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--brand);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 20px;
+    height: 100%;
+    box-sizing: border-box;
+}
+/* =========================================================
+   6. KONTAINER, KARTU, GRAFIK & TABEL
+   Semua kartu (container border, chart, dataframe) dibuat seragam:
+   radius sama, shadow sama, border sama -> tampilan lebih rapi.
+   ========================================================= */
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: var(--radius) !important;
+    box-shadow: var(--shadow) !important;
+    border: 1px solid var(--border) !important;
+    transition: box-shadow .15s ease;
+    margin-bottom: 4px;
+}
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    box-shadow: var(--shadow-hover) !important;
+}
+
+div[data-testid="stPlotlyChart"] {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+div[data-testid="stDataFrame"] {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.js-plotly-plot .legendtext { font-size: 11px !important; }
+
+/* =========================================================
+   7. KARTU METRIK (st.metric)
+   Dibuat responsif: value & label dibolehkan turun baris
+   (wrap) alih-alih dipotong "...", dan ukuran font memakai
+   clamp() supaya otomatis mengecil di kolom sempit tapi tetap
+   terbaca penuh di kolom lebar.
+   ========================================================= */
+div[data-testid="stMetric"] {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px 8px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+}
+div[data-testid="stMetricValue"] {
+    font-size: clamp(0.85rem, 3vw, 1.25rem) !important;
+    font-weight: 800;
+    color: var(--ink);
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    line-height: 1.2 !important;
+}
+div[data-testid="stMetricLabel"] {
+    font-size: .68rem; font-weight: 700; color: var(--faint);
+    text-transform: uppercase; letter-spacing: .04em;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.25 !important;
+}
+div[data-testid="stMetricLabel"] p {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+}
+/* Pastikan kolom pembungkus metric ikut menyusut/bertumbuh dengan rapi
+   dan tidak memaksa metric jadi kepotong di layar sempit. */
+div[data-testid="column"] { min-width: 0; }
+
+/* =========================================================
+   8. SIDEBAR (PANEL FILTER)
+   ========================================================= */
+section[data-testid="stSidebar"] {
+    background: #fff;
+    border-right: 1px solid var(--border);
+    box-shadow: 2px 0 12px rgba(15,23,42,.03);
+}
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2 { font-weight: 800; color: var(--ink); }
+section[data-testid="stSidebar"] .stCaption,
+section[data-testid="stSidebar"] small { color: var(--muted); }
+
+/* Geser teks (judul, label, caption) sedikit ke kanan tanpa
+   menggeser kotak border tombol/dropdown. */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] .stCaptionContainer,
+section[data-testid="stSidebar"] .stMarkdown p {
+    padding-left: 8px;
+}
+
+/* =========================================================
+   9. ELEMEN INTERAKTIF (BUTTON, INPUT, DIVIDER)
+   ========================================================= */
+.stButton > button {
+    border-radius: var(--radius-sm) !important;
+    font-weight: 700 !important;
+    border: 1px solid var(--border) !important;
+    transition: all .15s ease !important;
+}
+.stButton > button:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+.stButton > button[kind="primary"] {
+    background: linear-gradient(90deg, var(--brand) 0%, var(--brand-dark) 100%) !important;
+    border: none !important;
+}
+
+div[data-baseweb="select"] > div {
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border) !important;
+    background: #fff !important;
+    box-shadow: var(--shadow);
+}
+span[data-baseweb="tag"] {
+    background: var(--brand-soft) !important;
+    color: var(--brand-dark) !important;
+    border-radius: 6px !important;
+}
+
+hr { margin: 1.3rem 0 !important; border-color: var(--border) !important; }
+
+/* =========================================================
+   10. RESPONSIVE BREAKPOINTS UNTUK KARTU SEGMEN
+   Di layar sempit (laptop kecil / tablet), 4 kartu segmen yang
+   tadinya sebaris otomatis dijadikan 2 kolom, lalu 1 kolom di HP,
+   supaya tiap kartu tetap punya ruang cukup untuk menampilkan
+   nominal secara penuh.
+   ========================================================= */
+@media (max-width: 1200px) {
+    div[data-testid="stMetricValue"] { font-size: clamp(0.8rem, 2.6vw, 1.1rem) !important; }
+}
+@media (max-width: 900px) {
+    div[data-testid="column"] {
+        flex: 1 1 50% !important;
+        min-width: 220px !important;
+    }
+}
+@media (max-width: 560px) {
+    div[data-testid="column"] {
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+    }
+}
+
+/* =========================================================
+   11. KARTU SEGMEN BISNIS (segment_card)
+   Warna kartu ini beda-beda tiap segmen (lihat SEGMENT_THEME di
+   app.py), jadi diatur lewat CSS variable (--seg-bg, --seg-border,
+   --seg-color) yang dikirim dari Python, bukan style tetap di sini.
+   ========================================================= */
+.segment-header {
+    background: var(--seg-bg);
+    border: 1px solid var(--seg-border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.segment-header__icon {
+    font-size: 1.2rem;
+}
+.segment-header__label {
+    font-weight: 800;
+    color: var(--seg-color);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+/* Judul kecil di atas chart donat "Komposisi Group Produk" per kartu segmen. */
+.segment-chart-title {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--seg-color);
+    margin: 6px 0 2px;
+}
