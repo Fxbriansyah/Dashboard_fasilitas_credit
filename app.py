@@ -38,7 +38,7 @@ import streamlit as st
 # layout="wide" supaya dashboard bisa memakai lebar penuh browser.
 # ---------------------------------------------------------
 st.set_page_config(
-    page_title="Dashboard Pencairan - All Segment Bisnis",
+    page_title="Dashboard Pencairan",
     layout="wide",
     initial_sidebar_state="expanded",
 )
