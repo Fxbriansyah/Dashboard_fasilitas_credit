@@ -308,6 +308,50 @@ section[data-testid="stSidebar"] .stMarkdown p {
 }
 
 /* =========================================================
+   8.5. FILE UPLOADER
+   Versi Streamlit terbaru mengubah tampilan bawaan file_uploader
+   dari kotak besar bergaris putus-putus menjadi tombol ramping.
+   Aturan di bawah ini mengembalikan gaya kotak besar supaya tetap
+   konsisten dengan desain dashboard, apapun versi Streamlit yang
+   dipakai server (data-testid nama komponennya jarang berubah
+   walau tampilan visualnya berubah).
+   ========================================================= */
+div[data-testid="stFileUploader"] {
+    background: #fff;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+/* Area drop-zone di dalam file uploader (kalau ada, tergantung versi). */
+div[data-testid="stFileUploaderDropzone"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 4px 0 !important;
+}
+
+/* Instruksi teks kecil ("Drag and drop file here", limit ukuran, dst). */
+div[data-testid="stFileUploaderDropzoneInstructions"] {
+    color: var(--muted) !important;
+}
+
+/* Tombol "Browse files" / "Upload" di dalam uploader. */
+div[data-testid="stFileUploader"] button {
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border) !important;
+    font-weight: 700 !important;
+}
+
+/* Rapikan tampilan daftar file setelah berhasil dipilih. */
+div[data-testid="stFileUploaderFile"] {
+    background: var(--brand-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+}
+
+/* =========================================================
    9. ELEMEN INTERAKTIF (BUTTON, INPUT, DIVIDER)
    ========================================================= */
 .stButton > button {
