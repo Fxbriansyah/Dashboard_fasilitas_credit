@@ -54,7 +54,7 @@ button[data-testid="collapsedControl"] {
 .block-container {
     padding-top: 1.5rem;
     padding-bottom: 3rem;
-    max-width: 96%;
+    max-width: 90%;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
